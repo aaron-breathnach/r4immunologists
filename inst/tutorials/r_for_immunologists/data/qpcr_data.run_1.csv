@@ -1,0 +1,82 @@
+", shape ",,,,,,,,,,,,,
+Plate Type: Standard Curve,,,,,,,,,,,,,
+User: pcr,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Document Information,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Operator: pcr,,,,,,,,,,,,,
+Run Date: Monday, April 16, 2018 19:33:58,,,,,,,,,,,
+Last Modified: Monday, April 16, 2018 21:31:31,,,,,,,,,,,
+Instrument Type: Applied Biosystems 7300 Real-Time PCR System,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Comments:,,,,,,,,,,,,,
+SDS v1.4,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Thermal Cycler Profile,,,,,,,,,,,,,
+Stage,Repetitions,Temperature,Time,Ramp Rate,Auto Increment,,,,,,,,
+1,1,50.0 ¡C,00:30,Auto,,,,,,,,,
+2,40,95.0 ¡C,00:15,Auto,,,,,,,,,
+,,60.0 ¡C,01:00,Auto,,,,,,,,,
+3 (Dissociation),1,95.0 ¡C,00:15,Auto,,,,,,,,,
+,,60.0 ¡C,01:00,Auto,,,,,,,,,
+,,95.0 ¡C,00:15,Auto,,,,,,,,,
+,,60.0 ¡C,00:15,Auto,,,,,,,,,
+Standard 7300 Mode,,,,,,,,,,,,,
+Data Collection :  Stage 2 Step 2,,,,,,,,,,,,,
+PCR Volume: 50 µL,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Well,Sample Name,Detector,Task,Ct,StdDev Ct,Qty,Mean Qty,StdDev Qty,Filtered,Tm,Rn,User Defined #2,User Defined #3
+A1,RNAi1-1,18S,Unknown,136.8936,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A2,RNAi1-2,18S,Unknown,137.0574,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A3,RNAi1-3,18S,Unknown,139.3677,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A4,RNAi2-1,18S,Unknown,15.3587,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A5,RNAi2-2,18S,Unknown,15.2092,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A6,RNAi2-3,18S,Unknown,15.1074,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A7,Control-1,18S,Unknown,54.0279,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A8,Control-2,18S,Unknown,51.783,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+A9,Control-3,18S,Unknown,52.3272,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+B1,RNAi1-1,18S,Unknown,138.9087,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+B2,RNAi1-2,18S,Unknown,137.3949,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B3,RNAi1-3,18S,Unknown,137.8539,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B4,RNAi2-1,18S,Unknown,15.319,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B5,RNAi2-2,18S,Unknown,15.1371,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B6,RNAi2-3,18S,Unknown,15.1738,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B7,Control-1,18S,Unknown,53.6868,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B8,Control-2,18S,Unknown,51.5877,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+B9,Control-3,18S,Unknown,51.7203,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+C1,RNAi1-1,18S,Unknown,137.0898,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C2,RNAi1-2,18S,Unknown,136.6695,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C3,RNAi1-3,18S,Unknown,138.3183,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C4,RNAi2-1,18S,Unknown,15.3611,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C5,RNAi2-2,18S,Unknown,15.3166,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C6,RNAi2-3,18S,Unknown,15.2046,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C7,Control-1,18S,Unknown,54.5541,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C8,Control-2,18S,Unknown,52.2819,5.84,NA,NA,NA,NA,85.9,NA,NA,NA
+C9,Control-3,18S,Unknown,51.873,5.84,NA,NA,NA,NA,85.6,NA,NA,NA
+E1,RNAi1-1,18S,Unknown,202.8726,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+E2,RNAi1-2,18S,Unknown,204.3468,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E3,RNAi1-3,18S,Unknown,206.8074,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E4,RNAi2-1,18S,Unknown,26.6213,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E5,RNAi2-2,18S,Unknown,26.269,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E6,RNAi2-3,18S,Unknown,26.0578,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E7,Control-1,18S,Unknown,77.1621,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E8,Control-2,18S,Unknown,75.3705,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+E9,Control-3,18S,Unknown,75.5964,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+F1,RNAi1-1,18S,Unknown,204.8805,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+F2,RNAi1-2,18S,Unknown,205.2387,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+F3,RNAi1-3,18S,Unknown,208.2213,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+F4,RNAi2-1,18S,Unknown,26.8602,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+F5,RNAi2-2,18S,Unknown,26.3256,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+F6,RNAi2-3,18S,Unknown,26.2693,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+F7,Control-1,18S,Unknown,76.7658,3.45,NA,NA,NA,NA,81.7,NA,NA,NA
+F8,Control-2,18S,Unknown,75.4929,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+F9,Control-3,18S,Unknown,75.4746,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G1,RNAi1-1,18S,Unknown,205.0083,3.45,NA,NA,NA,NA,81.1,NA,NA,NA
+G2,RNAi1-2,18S,Unknown,205.2045,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G3,RNAi1-3,18S,Unknown,208.0575,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G4,RNAi2-1,18S,Unknown,26.5875,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G5,RNAi2-2,18S,Unknown,26.2517,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G6,RNAi2-3,18S,Unknown,26.0223,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G7,Control-1,18S,Unknown,75.7725,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G8,Control-2,18S,Unknown,75.5571,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
+G9,Control-3,18S,Unknown,75.3852,3.45,NA,NA,NA,NA,81.4,NA,NA,NA
