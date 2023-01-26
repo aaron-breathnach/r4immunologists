@@ -97,7 +97,7 @@ make_bar_plot <- function(dat, fig, ylab) {
 
 ## What is R?
 
-Wikipedia describes R as "a programming language for statistical computing and graphics".
+R is "a programming language for statistical computing and graphics".
 
 R is used across a range of disciplines for cleaning, analysing, and visualising data.
 
@@ -170,7 +170,7 @@ If we place `#` in front of a command, R will ignore the command and it won't pr
 
 This is useful for adding annotations to our code to help make it more readable. For example:
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
 ## addition
 10 + 2
 ## subtraction
@@ -220,7 +220,7 @@ When you create an object in R, it will appear in the Environment pane.
 
 What happens when you run the code below?
 
-```{r question_2, exercise=TRUE}
+```{r x_equals_y, exercise=TRUE}
 x <- 6
 y <- 6
 x == y
@@ -440,21 +440,6 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 ```
 
-### Pacakges for today's workshop
-
-For today's workshop, we'll need to install a few packages:
-
-```{r eval=FALSE}
-packages <- c("tidyverse", "scales", "rstatix", "ggpubr", "ComplexHeatmap")
-
-## install_packages()
-install_packages <- function(x) {
-  install.packages(x)
-}
-
-lapply(packages, install_packages)
-```
-
 ## Enter the tidyverse
 
 According to [tidyverse.org](https://www.tidyverse.org/):
@@ -552,7 +537,7 @@ starwars %>%
 
 **Exercise**: Subset the following columns from the starwars table: name, birth_year, and species.
 
-```{r select, exercise=TRUE}
+```{r select, exercise=TRUE, connection="db"}
 starwars
 ```
 
