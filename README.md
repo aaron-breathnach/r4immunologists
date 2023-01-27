@@ -1,5 +1,7 @@
 # r4immunologists
 
+![](https://www.tcd.ie/identity/assets/logos/Logos%20page/jpg/Trinity_Main_Logo.jpg)
+
 ## RStudio
 
 To install RStudio, click [here](https://posit.co/download/rstudio-desktop/).
