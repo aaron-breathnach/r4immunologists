@@ -1158,7 +1158,7 @@ Everyone who's anyone loves a heatmap.
 
 Here, I'll show you how to make a heatmap using the `pheatmap()` function from the ComplexHeatmap package so that you can impress your friends.
 
-In this example, I'll use the `metabolomics.tsv` dataset, which includes the concentrations of 25 metabolites in 20 mice: 10 mice were fed a standard-fat diet (SFD), and 10 mice were fed a high-fat diet (HFD).
+In this example, I'll use the `metabolites.tsv` dataset, which includes the concentrations of 25 metabolites in 20 mice: 10 mice were fed a standard-fat diet (SFD), and 10 mice were fed a high-fat diet (HFD).
 
 ```{r message=FALSE}
 metabolites <- read_tsv("data/metabolites.tsv")
@@ -1229,6 +1229,117 @@ ComplexHeatmap::pheatmap(log_mat,
 ## Statistical analysis
 
 R was designed for statistical programming, and any statistical test can be run in R. The [rstatix](https://github.com/kassambara/rstatix) package can be used to perform basic statistical tests in a [pipe-friendly](https://www.r-bloggers.com/2018/07/writing-pipe-friendly-functions/) way.
+
+### *t*-test
+
+#### Independent sample *t*-test
+
+Before performing an independent sample *t*-test, you should check that your data meet the following assumptions:
+
+- the observations are independent of each other
+- the data is normally distributed
+- the groups have equal variance
+- the groups do not have extreme outliers
+
+In this example, we want to test if there is a difference in the concentration of the HLA-DR antibody in females v males at Day -1.
+
+```{r message=FALSE}
+dat_unpaired <- read_tsv("data/hla_dr.tsv", col_select = c(2, 3)) %>%
+  setNames(c("sex", "mfi")) %>%
+  mutate(sex = as.factor(sex))
+dat_unpaired
+```
+
+We will use `rstatix::shapiro_test()`, which implements the Shapiro-Wilk test, to assess if the data is normally distributed:
+
+```{r}
+res_shapiro <- rstatix::shapiro_test(dat_unpaired, mfi)
+res_shapiro
+```
+
+The *p*-value from the Shapiro-Wilk test is greater than 0.05, so we can conclude that the data is normally distributed.
+
+We can also use a QQ-plot to determine if the data follows a normal distribution. We will make a QQ-plot using the `ggqqplot()` function from `ggpubr`.
+
+```{r message=FALSE, warning=FALSE}
+ggpubr::ggqqplot(dat_unpaired$mfi)
+```
+
+Our points fall close to the diagonal line, which indicates the the data is normally distributed.
+
+We will use `rstatix::levene_test()`, which implements Levene's test, to assess the equality of variances:
+
+```{r}
+res_levene <- rstatix::levene_test(dat_unpaired, mfi ~ sex)
+res_levene
+```
+
+The *p*-value from Levene's test is greater than 0.05, so we can conclude that the groups have equal variance.
+
+A box plot can be used to visualise variance:
+
+```{r}
+ggplot(data = dat_unpaired, aes(x = sex, y = mfi)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.125) +
+  theme_classic()
+```
+
+We will use `rstatix::identify_outliers()` to identify extreme outliers in each group. Note that this function defines extreme outliers as ["Values above Q3 + 3xIQR or below Q1 - 3xIQR"](https://rdrr.io/cran/rstatix/man/outliers.html)
+
+```{r}
+dat_unpaired %>%
+  group_by(sex) %>%
+  rstatix::identify_outliers()
+```
+
+There are no extreme outliers in the groups.
+
+Based on the above tests, it is appropriate to perform an independent sample *t*-test on this data.
+
+```{r}
+dat_unpaired %>%
+  rstatix::t_test(mfi ~ sex)
+```
+
+After all that, the difference between females and males is non-significant.
+
+![](https://upload.wikimedia.org/wikipedia/commons/3/3b/Paris_Tuileries_Garden_Facepalm_statue.jpg)
+
+#### Paired sample *t*-test
+
+Before performing a paired *t*-test, you should check that your data meet the following assumptions:
+
+- subjects are independent of each other
+- matched pairs are obtained from the same subject
+- the differences between matched pairs are normally distributed
+- there are no extreme outliers in the differences between matched pairs
+
+In this example, we want to test if there is a difference in the concentration of the HLA-DR antibody on Day -1 versus Day 14. Samples were collected from the same subject at each time point.
+
+```{r}
+dat_paired <- read_tsv("data/hla_dr.tsv", col_select = c(3, 4)) %>%
+  setNames(c("time_1", "time_2")) %>%
+  ## calculate the difference between matched pairs
+  mutate(difference = time_1 - time_2)
+dat_paired
+```
+
+We will use `rstatix::shapiro_test()` to test if differences between matched pairs are normally distributed:
+
+```{r}
+rstatix::shapiro_test(dat_paired, difference)
+```
+
+The *p*-value from the Shapiro-Wilk test of normality is greater than 0.05, which indicates that the differences between matched pairs are normally distributed.
+
+We will use `rstatix::identify_outliers()` to identify extreme outliers in the difference between matched pairs:
+
+```{r}
+rstatix::identify_outliers(dat_paired, difference)
+```
+
+There are no extreme outliers in the groups.
 
 ### ANOVA
 

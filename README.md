@@ -29,3 +29,22 @@ We can run the tutorial as follows:
 ```{r}
 learnr::run_tutorial("r_for_immunologists", package = "r4immunologists")
 ```
+
+The data used in this tutorial can be copied to your desktop as follows:
+
+```
+r4immunologists::copy_data()
+```
+
+This will create a directory on your desktop called `r_for_immunologists`. We can set this as your working directory as follows:
+
+For today's tutorial, I'd recommend saving the data to your Desktop.
+
+We can set our working directory as follows:
+
+```{r}
+## MacOS
+setwd("~/Desktop")
+## Windows
+setwd("C:\Users\<USERNAME>\Desktop")
+```
