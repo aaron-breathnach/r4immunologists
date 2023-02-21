@@ -1,8 +1,12 @@
 # r4immunologists
 
-![](https://www.tcd.ie/identity/assets/logos/Logos%20page/jpg/Trinity_Main_Logo.jpg)
+This R package contains the material used in the R for Immunologists workshop delivered by Aaron Walsh at Trinity College Dublin.
 
 ## RStudio
+
+For the today's workshop, we'll be working in RStudio.
+
+Before we can use RStudio, we'll need to install R. To do so, click [here](https://cran.rstudio.com/).
 
 To install RStudio, click [here](https://posit.co/download/rstudio-desktop/).
 
@@ -12,10 +16,10 @@ When you open RStudio, you will see a screen like this:
 
 As you can see, there are four panes:
 
-1.  The top left pane is the Source Editor. This is where you write your R code.
-2.  The top right pane is the Environment, which displays all user-defined objects.
-3.  The bottom right pane is Plots, which is where plots are drawn.
-4.  The bottom left pane is the Console. This is where you run your R code.
+1.  The top left pane is the **Source Editor**. This is where you write your R code.
+2.  The top right pane is the **Environment**. This displays all user-defined objects.
+3.  The bottom right pane is **Plots**. This where plots are drawn.
+4.  The bottom left pane is the **Console**. This is where you run your R code.
 
 ## Install r4immunologists
 
@@ -26,27 +30,20 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("aaron-breathnach/r4immunologists")
 ```
 
+## Load the interactive tutorial
+
 We can run the tutorial as follows:
 
 ```{r}
 learnr::run_tutorial("r_for_immunologists", package = "r4immunologists")
 ```
 
-The data used in this tutorial can be copied to your desktop as follows:
+## Data
 
-```
+We can copy the data for this tutorial to our Desktop by running:
+
+```{r}
 r4immunologists::copy_data()
 ```
 
-This will create a directory on your desktop called `r_for_immunologists`. We can set this as your working directory as follows:
-
-For today's tutorial, I'd recommend saving the data to your Desktop.
-
-We can set our working directory as follows:
-
-```{r}
-## MacOS
-setwd("~/Desktop")
-## Windows
-setwd("C:\Users\<USERNAME>\Desktop")
-```
+The data used in this tutorial can also be downloaded from [Google Drive](https://drive.google.com/open?id=1CiTHFHxnXQVT8rltmoGoremlw0wVu4jD&authuser=awalsh12%40tcd.ie&usp=drive_fs).

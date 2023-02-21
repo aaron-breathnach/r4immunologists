@@ -39,55 +39,57 @@ make_bar_plot <- function(dat, fig, ylab) {
   
   options(dplyr.summarise.inform = FALSE)
   
-  filtered <- dat %>%
-    filter(grepl(fig, panel)) %>%
-    select(sex, immune_marker, contains("Day")) %>%
-    pivot_longer(
+  filtered <- dat |>
+    dplyr::filter(grepl(fig, panel)) |>
+    dplyr::select(sex, immune_marker, contains("Day")) |>
+    tidyr::pivot_longer(
       cols = !c(sex, immune_marker),
       names_to = "day",
       values_to = "value"
     ) %>%
-    drop_na()
+    tidyr::drop_na()
   
   ## calculate mean and standard deviation
-  mean_sd <- filtered %>%
-    group_by(day, immune_marker) %>%
-    summarise(
+  mean_sd <- filtered |>
+    dplyr::group_by(day, immune_marker) |>
+    dplyr::summarise(
       mean = mean(value),
       sd = sd(value)
     )
   
-  ggplot(mean_sd, aes(x = day, y = mean)) +
+  ggplot2::ggplot(mean_sd, ggplot2::aes(x = day, y = mean)) +
     ## plot bars
-    geom_bar(
+    ggplot2::geom_bar(
       stat = "identity",
       colour = "black",
       fill = NA,
       width = 0.5
     ) +
     ## plot points
-    geom_jitter(
+    ggplot2::geom_jitter(
       data = filtered,
-      aes(x = day, y = value, fill = sex),
+      ggplot2::aes(x = day, y = value, fill = sex),
       pch = 21,
       colour = "black",
       width = 0.2,
       size = 3
     ) +
     ## add error bars
-    geom_errorbar(
-      aes(ymin = mean - sd, ymax = mean + sd),
+    ggplot2::geom_errorbar(
+      ggplot2::aes(ymin = mean - sd, ymax = mean + sd),
       width = 0.25
     ) +
     ## specify the axis labels
-    labs(x = "", y = ylab) +
+    ggplot2::labs(x = "", y = ylab) +
     ## adjust the y-axis
-    scale_y_continuous(expand = expansion(mult = c(0, 0.1)),
-                       labels = scales::comma) +
+    ggplot2::scale_y_continuous(
+      expand = ggplot2::expansion(mult = c(0, 0.1)),
+      labels = scales::comma
+    ) +
     ## set the colour palette
-    scale_fill_manual(values = pal, guide = "none") +
-    theme_classic(base_size = 17.5) +
-    theme(
+    ggplot2::scale_fill_manual(values = pal, guide = "none") +
+    ggplot2::theme_classic(base_size = 17.5) +
+    ggplot2::theme(
       axis.title.y = ggtext::element_markdown(face = "bold"),
       axis.text.x = element_text(angle = 45, hjust = 1)
     )
@@ -179,6 +181,8 @@ This is useful for adding annotations to our code to help make it more readable.
 10 * 2
 ## division
 10 / 2
+## exponents
+10 ^ 2
 ```
 
 ## Objects
@@ -241,10 +245,10 @@ print(my_vector)
 
 Generally, a vector will be one of the following classes:
 
-- A double vector, which stores numbers.
-- An integer vector, which stores integers.
-- A character vector, which stores a string of text.
-- A logical vector, which stores `TRUE` / `FALSE`.
+-   A double vector, which stores numbers.
+-   An integer vector, which stores integers.
+-   A character vector, which stores a string of text.
+-   A logical vector, which stores `TRUE` / `FALSE`.
 
 We can check the class of a vector as follows:
 
@@ -278,6 +282,8 @@ my_df <- data.frame(id = c("a", "b", "c"),
                 var_2 = c(4, 5, 6))
 print(my_df)
 ```
+
+Most of us will be familiar with working with tables, so we it might help to think of data frames as tables.
 
 ## Functions
 
@@ -391,7 +397,7 @@ ifelse(y > 1, "Yes", "No")
 
 ## Packages
 
-One of the strengths of R is that there are thousands of packages available to download which come with their own functions. R packages are ["preassembled collections of functions and objects"](https://rstudio-education.github.io/hopr/packages.html). 
+One of the strengths of R is that there are thousands of packages available to download which come with their own functions. R packages are ["preassembled collections of functions and objects"](https://rstudio-education.github.io/hopr/packages.html).
 
 ### CRAN
 
@@ -440,6 +446,8 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 ```
 
+Note that I won't be discussing Bioconductor packages today. I will run a second workshop on doing bioinformatics in R.
+
 ## Enter the tidyverse
 
 According to [tidyverse.org](https://www.tidyverse.org/):
@@ -478,18 +486,16 @@ When we load the tidyverse packages, we can use the operator `%>%`, which is cal
 
 We can think of this story as a sequence of actions, where each action leads to the next:
 
-1. Foo Foo went hopping through the forest.
-2. Foo Foo scooped up the field mice.
-3. Foo Foo bopped the field mice on the head.
+1.  Foo Foo went hopping through the forest.
+2.  Foo Foo scooped up the field mice.
+3.  Foo Foo bopped the field mice on the head.
 
 When piping, it helps to think of functions as actions. For example, to represent the sequence of actions described here as R code, we could write:
 
-```
-foo_foo %>%
-  hop(through = forest) %>%
-  scoop(up = field_mice) %>%
-  bop(on = head)
-```
+    foo_foo %>%
+      hop(through = forest) %>%
+      scoop(up = field_mice) %>%
+      bop(on = head)
 
 I'm not sure what sort of bunny goes around smacking mice, but there you have it.
 
@@ -656,10 +662,10 @@ starwars %>%
 
 Within the tidyverse, we have a couple of options for importing our data:
 
-1. We can use the readr package to import delimited files (e.g. CSV, TSV, etc.).
-2. We can use the readxl package to import XLSX files from Excel.
+1.  We can use the readr package to import delimited files (e.g. CSV, TSV, etc.).
+2.  We can use the readxl package to import XLSX files from Excel.
 
-In this example, we will import data from the file `murphy.tsv` using `read_tsv()` function from readr. Note that the data used to generate all of the figures for the [Murphy *et al.* (2022)](https://www.jci.org/articles/view/162581) paper has been collated in this table.
+In this example, we will import data from the file `data/murphy.tsv` using `read_tsv()` function from readr. Note that the data used to generate all of the figures for the [Murphy *et al.* (2022)](https://www.jci.org/articles/view/162581) paper has been collated in this table.
 
 To import the data, run the following command:
 
@@ -691,11 +697,11 @@ We can inspect the structure of the table using the `str()` function.
 str(dat)
 ```
 
-- `figure` indicates the corresponding figure
-- `panel` indicates the corresponding panel
-- `immune_marker` indicates the immune marker being measured
-- `sex` indicates the sex of the subject
-- `day *` indicates the measurement at the given time-point
+-   `figure` indicates the corresponding figure
+-   `panel` indicates the corresponding panel
+-   `immune_marker` indicates the immune marker being measured
+-   `sex` indicates the sex of the subject
+-   `day *` indicates the measurement at the given time-point
 
 We can display the first 6 lines of the table using the `head()` function.
 
@@ -724,9 +730,9 @@ ggplot(data = <DATA>) +
 
 To use the template, replace:
 
-- `<DATA>` with the name of your data frame;
-- `<GEOM_FUNCTION>` with the `geom_` function you want to use; and
-- `<MAPPINGS>` with aesthetic mappings (e.g. coordinates, colours, etc.).
+-   `<DATA>` with the name of your data frame;
+-   `<GEOM_FUNCTION>` with the `geom_` function you want to use; and
+-   `<MAPPINGS>` with aesthetic mappings (e.g. coordinates, colours, etc.).
 
 ### Box plots
 
@@ -775,9 +781,9 @@ p3
 
 We can choose what colours to use for each group. R allows us to use [HTML colour codes](https://htmlcolorcodes.com/). Here, we will use:
 
-- <span style="color: #f74ed6;">#f74ed6</span> for F
+-   [#f74ed6]{style="color: #f74ed6;"} for F
 
-- <span style="color: #1199b2;">#1199b2</span> for M
+-   [#1199b2]{style="color: #1199b2;"} for M
 
 We can define our own palette by making a named list of colours:
 
@@ -1140,6 +1146,7 @@ combo
 **Exercise**: Recreate panels B-C from Figure 4 (shown here) using `make_bar_plot()` and combine them using `cowplot::plot_grid()`.
 
 ![](images/murphy_et_al_fig_4bc.png)
+
 ```{r cowplot_eg, exercise=TRUE, fig.dim=c(8.75, 5)}
 
 ```
@@ -1226,6 +1233,8 @@ ComplexHeatmap::pheatmap(log_mat,
          annotation_colors = annotation_colours)
 ```
 
+![](https://media.tenor.com/s0GNtbpst44AAAAC/nice-south-park.gif)
+
 ## Statistical analysis
 
 R was designed for statistical programming, and any statistical test can be run in R. The [rstatix](https://github.com/kassambara/rstatix) package can be used to perform basic statistical tests in a [pipe-friendly](https://www.r-bloggers.com/2018/07/writing-pipe-friendly-functions/) way.
@@ -1236,10 +1245,10 @@ R was designed for statistical programming, and any statistical test can be run 
 
 Before performing an independent sample *t*-test, you should check that your data meet the following assumptions:
 
-- the observations are independent of each other
-- the data is normally distributed
-- the groups have equal variance
-- the groups do not have extreme outliers
+-   the observations are independent of each other
+-   the data is normally distributed
+-   the groups have equal variance
+-   the groups do not have extreme outliers
 
 In this example, we want to test if there is a difference in the concentration of the HLA-DR antibody in females v males at Day -1.
 
@@ -1253,7 +1262,9 @@ dat_unpaired
 We will use `rstatix::shapiro_test()`, which implements the Shapiro-Wilk test, to assess if the data is normally distributed:
 
 ```{r}
-res_shapiro <- rstatix::shapiro_test(dat_unpaired, mfi)
+library(rstatix)
+
+res_shapiro <- shapiro_test(dat_unpaired, mfi)
 res_shapiro
 ```
 
@@ -1302,7 +1313,7 @@ dat_unpaired %>%
   rstatix::t_test(mfi ~ sex)
 ```
 
-After all that, the difference between females and males is non-significant.
+After all that, the difference between females and males is non-significant!
 
 ![](https://upload.wikimedia.org/wikipedia/commons/3/3b/Paris_Tuileries_Garden_Facepalm_statue.jpg)
 
@@ -1310,14 +1321,14 @@ After all that, the difference between females and males is non-significant.
 
 Before performing a paired *t*-test, you should check that your data meet the following assumptions:
 
-- subjects are independent of each other
-- matched pairs are obtained from the same subject
-- the differences between matched pairs are normally distributed
-- there are no extreme outliers in the differences between matched pairs
+-   subjects are independent of each other
+-   matched pairs are obtained from the same subject
+-   the differences between matched pairs are normally distributed
+-   there are no extreme outliers in the differences between matched pairs
 
 In this example, we want to test if there is a difference in the concentration of the HLA-DR antibody on Day -1 versus Day 14. Samples were collected from the same subject at each time point.
 
-```{r}
+```{r message=FALSE}
 dat_paired <- read_tsv("data/hla_dr.tsv", col_select = c(3, 4)) %>%
   setNames(c("time_1", "time_2")) %>%
   ## calculate the difference between matched pairs
@@ -1341,16 +1352,21 @@ rstatix::identify_outliers(dat_paired, difference)
 
 There are no extreme outliers in the groups.
 
+```{r}
+dat_paired %>%
+  select(1, 2) %>%
+  pivot_longer(cols = everything(), names_to = "timepoint", values_to = "mfi") %>%
+  rstatix::t_test(mfi ~ timepoint, paired = TRUE)
+```
+
 ### ANOVA
 
-Here, we will use Tukey's test with ANOVA of the data used to generate Figure 3C from the Murphy _et al_. (2022) study, which will tell us if CD14<sup>+</sup> CD16<sup>+</sup> cell counts change significantly over time relative to Day -1.
+Here, we will use Tukey's test with ANOVA of the data used to generate Figure 3C from the Murphy *et al*. (2022) study, which will tell us if CD14<sup>+</sup> CD16<sup>+</sup> cell counts change significantly over time relative to Day -1.
 
 ```{r message=FALSE, warning=FALSE}
-library(rstatix)
-
 ## run Tukey's test with ANOVA
 stats <- dat_fig_3c %>%
-  tukey_hsd(value ~ day) %>%
+  rstatix::tukey_hsd(value ~ day) %>%
   mutate(group1 = recode(group1, "Day " = "Day -1")) %>%
   filter(group1 == "Day -1")
 stats
@@ -1359,8 +1375,6 @@ stats
 We can add p-values to our plots using the ggpubr package. For example, we can add the results of Tukey's test to Figure 3C as follows:
 
 ```{r}
-library(ggpubr)
-
 ## find maximum value in the data
 max_y <- dat_fig_3c %>%
   filter(value == max(value)) %>%
@@ -1368,7 +1382,7 @@ max_y <- dat_fig_3c %>%
 
 ## add stats to plot
 fig_3c +
-  stat_pvalue_manual(
+  ggpubr::stat_pvalue_manual(
     stats,
     y.position = max_y,
     step.increase = 0.1,
@@ -1382,31 +1396,22 @@ rstatix can also be used to run correlation analysis. Here, we will use data fro
 
 ```{r message=FALSE, fig.dim=c(6.25, 5)}
 eg <- read_tsv("data/neutrophils_v_b_pseudolongum.tsv")
+eg
+```
 
+To calculate the Spearman rank correlation coefficient between the relative abundance of *B. pseudolongum* and neutrophil counts, run:
+
+```{r}
 corr <- eg %>%
   rstatix::cor_test(relab, mfi, method = "spearman")
+corr
+```
 
-rho <- round(corr[[1, "cor"]], 3)
-
-label <- paste0("\U03C1 = ", rho)
-
-x_pos <- min(eg$relab)
-y_pos <- max(eg$mfi)
-
+```{r}
 p <- ggplot(eg, aes(x = relab, y = mfi)) +
-  geom_smooth(method = "lm", formula = "y ~ x", colour = "black") +
-  geom_point(pch = 21, colour = "black", fill = "forestgreen") +
-  geom_text(x = x_pos,
-            y = y_pos,
-            label = label,
-            hjust = 0,
-            size = 6.25) +
-  labs(x = "*Bifidobacterium pseudolongum* (%)",
-       y = paste0("Neutrophils (\U03BC", "l<sup>-1</sup>)")
-  ) +
-  theme_classic(base_size = 12.5) +
-  theme(axis.title.x = ggtext::element_markdown(face = "bold"),
-        axis.title.y = ggtext::element_markdown(face = "bold"))
+  geom_smooth(method = "lm") +
+  geom_point() +
+  theme_classic()
 p
 ```
 
