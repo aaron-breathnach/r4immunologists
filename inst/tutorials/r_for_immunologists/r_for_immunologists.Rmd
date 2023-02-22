@@ -1165,9 +1165,9 @@ cowplot::plot_grid(plotlist = plots)
 
 Everyone who's anyone loves a heatmap.
 
-Here, I'll show you how to make a heatmap using the `pheatmap()` function from the ComplexHeatmap package so that you can impress your friends.
+Here, I'll show you how to make a heatmap using the `pheatmap()` function from the pheatmap package so that you can impress your friends.
 
-In this example, I'll use the `metabolites.tsv` dataset, which includes the concentrations of 25 metabolites in 20 mice: 10 mice were fed a standard-fat diet (SFD), and 10 mice were fed a high-fat diet (HFD).
+In this example, I'll use the `data/metabolites.tsv` dataset, which includes the concentrations of 25 metabolites in 20 mice: 10 mice were fed a standard-fat diet (SFD), and 10 mice were fed a high-fat diet (HFD).
 
 ```{r message=FALSE}
 metabolites <- read_tsv("data/metabolites.tsv")
@@ -1191,11 +1191,9 @@ log_mat <- log(mat + 1)
 Note that I added 1 to every value in the matrix prior to the log transformation because log 0 is undefined.
 
 ```{r, fig.dim=c(7, 6), message=FALSE}
-library(ComplexHeatmap)
+library(pheatmap)
 
-ComplexHeatmap::pheatmap(log_mat,
-         scale = "row",
-         name = "z-score")
+pheatmap(log_mat, scale = "row")
 ```
 
 We can add a colour bar to the heatmap to indicate the groups to which each sample belongs to make it easier to see clusters of samples.
@@ -1228,9 +1226,8 @@ annotation_colours <- list("Diet" = c("HFD" = "orange", "SFD" = "navy"))
 Now, we can add the annotation to the heatmap:
 
 ```{r, fig.dim=c(7, 6)}
-ComplexHeatmap::pheatmap(log_mat,
+pheatmap(log_mat,
          scale = "row",
-         name = "z-score",
          annotation_col = annotation_col,
          annotation_colors = annotation_colours)
 ```
