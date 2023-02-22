@@ -1062,7 +1062,7 @@ tmp_p <- ggplot(multi_facet_input, aes(x = day, y = value)) +
 tmp_p
 ```
 
-To facet this plot, we use `facet_wrap()`, as follows:
+The plot looks nice, but to make it meaningful, we'll need to facet it using `facet_wrap()`, as follows:
 
 ```{r}
 tmp_p +
@@ -1161,6 +1161,8 @@ cowplot::plot_grid(plotlist = plots)
 
 ## Heatmaps
 
+![](images/predator.png)
+
 Everyone who's anyone loves a heatmap.
 
 Here, I'll show you how to make a heatmap using the `pheatmap()` function from the ComplexHeatmap package so that you can impress your friends.
@@ -1180,7 +1182,7 @@ mat <- metabolites %>%
   as.matrix()
 ```
 
-We can do a square root transformation on the the matrix as follows:
+We can do a log on the the matrix as follows:
 
 ```{r}
 log_mat <- log(mat + 1)
