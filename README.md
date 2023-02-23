@@ -46,4 +46,4 @@ We can copy the data for this tutorial to our Desktop by running:
 r4immunologists::copy_data()
 ```
 
-The data used in this tutorial can also be downloaded from [Google Drive](https://drive.google.com/open?id=1CiTHFHxnXQVT8rltmoGoremlw0wVu4jD&authuser=awalsh12%40tcd.ie&usp=drive_fs).
+The data used in this tutorial can also be downloaded from [Google Drive](https://drive.google.com/drive/folders/1CiTHFHxnXQVT8rltmoGoremlw0wVu4jD?usp=sharing).
