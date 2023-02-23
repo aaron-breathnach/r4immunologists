@@ -147,7 +147,7 @@ R is a language, whereas RStudio "[gives you a way to talk to your computer](htt
 
 When you open RStudio, you will see a screen like this:
 
-![](images/rstudio_screenshot.png)
+![](images/rstudio_screenshot.png){width=75%}
 
 As you can see, there are four panes:
 
@@ -222,7 +222,7 @@ x == 2
 
 When you create an object in R, it will appear in the Environment pane.
 
-What happens when you run the code below?
+**Exercise**: What happens when you run the code below?
 
 ```{r x_equals_y, exercise=TRUE}
 x <- 6
@@ -254,6 +254,19 @@ We can check the class of a vector as follows:
 
 ```{r}
 class(my_vector)
+```
+
+Below are examples of each class of vector:
+
+```{r}
+## double
+c(1.5, 2, 0.67)
+## integer
+c(1, 2, 3)
+## character
+c("Mike D", "MCA", "Ad-Rock")
+## logical
+c(TRUE, FALSE, TRUE)
 ```
 
 ### Lists
@@ -299,7 +312,7 @@ cube_root <- function(x) {
 cube_root(x = 27)
 ```
 
-Use the `cube_root()` function to find the cube root of 1728.
+**Exercise**: Use the `cube_root()` function to find the cube root of 1728.
 
 ```{r cube_root, exercise=TRUE}
 cube_root(x = 1728)
@@ -313,7 +326,7 @@ nth_root <- function(x, n) {
 }
 ```
 
-Use the `nth_root()` function to get the 4<sup>th</sup> root of 1296:
+**Exercise**: Use the `nth_root()` function to get the 4<sup>th</sup> root of 1296:
 
 ```{r nth_root_q, exercise=TRUE}
 nth_root(x = 1296, n = 4)
@@ -329,7 +342,7 @@ R comes with many useful built-in functions, and it's not necessary to know what
 
 This will open a help page in the Figure pane, like so:
 
-![](images/help_example.png)
+![](images/help_example.png){width=67%}
 
 ## Loops
 
@@ -340,7 +353,7 @@ values <- c(8, 27, 64)
 lapply(values, cube_root)
 ```
 
-Write a loop to find the cube root of the following values: 62, 92, and 37.
+**Exercise**: Write a loop to find the cube root of the following values: 62, 92, and 37.
 
 ```{r loop_eg, exercise=TRUE}
 
@@ -458,7 +471,7 @@ The tidyverse can be considered as a dialect of R, with an emphasis on readabili
 
 The core tidyverse packages are ggplot2, dplyr, tidyr, readr, purrr, tibble, stringr, and forcats.
 
-![](images/tidyverse.png)
+![](images/tidyverse.png){width=50%}
 
 To install the tidyverse packages, run the following command:
 
@@ -503,7 +516,7 @@ I'm not sure what sort of bunny goes around smacking mice, but there you have it
 
 The tibble package provides us with the ability to use tibbles, which are data frames with ["more user-friendly printing, subsetting, and factor handling"](https://www.oreilly.com/library/view/efficient-data-processing/9781491980736/ch01.html). Tibbles makes it easier to work with large data.
 
-Run the code below to see the differences between a data frame and a tibble:
+**Exercise**: Run the code below to see the differences between a data frame and a tibble:
 
 ```{r tbl_df_eg, exercise=TRUE}
 ## load the in-built iris data frame
@@ -525,7 +538,7 @@ Note that I will refer to tibbles as data frames in the remainder of the tutoria
 
 ## Transforming data
 
-The dplyr package can be used to transform our data. To demonstrate some of dplyr's functionalities, I'm going to use the starwars dataset which comes packaged with dplyr. We'll get back to the immunology shortly, but I couldn't pass up this opportunity.
+The dplyr package can be used to transform our data. To demonstrate some of dplyr's functionalities, I'm going to use the starwars dataset which comes packaged with dplyr. We'll get on to the immunology shortly, but I couldn't pass up this opportunity.
 
 ```{r}
 data("starwars")
@@ -713,6 +726,90 @@ We can display the last 6 lines of the table using the `tail()` function.
 
 ```{r}
 tail(dat)
+```
+
+## Tidying data
+
+Frequently, the types of data we deal with as biologists aren't formatted in a way that makes them straightforward to handle for downstream analysis. For example, here's a screenshot of a CSV file showing the results of a qPCR assay:
+
+![](images/qpcr_data.png)
+
+Rows 1-27 of this file provide information about the run itself, but the results don't start until row 28. If we want to analyse the results, it'd be useful to exclude rows 1:27. Similarly, we'd only need 3 columns from the results (i.e. `c("Well", "Sample Name", "Ct")`), so it'd be useful to exclude all other columns. The following code can be used to import a tidied version of this table:
+
+```{r message=FALSE}
+cols <- c("Well", "Sample Name", "Ct")
+
+qpcr_data <- read_csv("data/qpcr_data.run_1.csv",
+                      ## exclude the first 27 rows
+                      skip = 27,
+                      ## select the required columns
+                      col_select = all_of(cols))
+qpcr_data
+```
+
+Often, it's useful to remove spaces in column names, which can be achieved as follows:
+
+```{r}
+qpcr_data <- qpcr_data %>%
+  setNames(str_replace(names(.), " ", "_"))
+
+## list the updated column names
+colnames(qpcr_data)
+```
+
+Now the table is in a format that is more interoperable.
+
+### readxl and tidyr
+
+Frequently, we might need to analyse data that we have saved in Excel as XLSX files. Although Excel is excellent for day-to-day work, it can sometimes be tricky to analyse data to work with XLSX files in R, especially if any formatting has been applied to the data in Excel. For example, here's a screenshot of a CSV file recording the expression of TNF-$\alpha$ by monocytes in response to 3 treatments:
+
+![](images/tnf_alpha.png)
+
+As you can see, the first column contains merged cells. When we import this table, these cells will be un-merged as shown below:
+
+```{r message=FALSE}
+tnf <- readxl::read_excel("data/tnf_levels.xlsx")
+tnf
+```
+
+To deal with this, we can use the `fill()` function from tidyr, which will fill empty cells with the preceding value:
+
+```{r}
+tnf <- tnf %>%
+  fill(group)
+tnf
+```
+
+Notice that there are rows with missing values. We can remove these rows using `drop_na()` function from tidyr:
+
+```{r}
+tnf <- tnf %>%
+  drop_na()
+tnf
+```
+
+Sometimes we might only be interested in a subset of cells from a given sheet of an XLSX file. For example, here's a screenshot of an XLSX file containing the tables used to generate the figures in the Murphy *et al.* study:
+
+![](images/xlsx_data.png)
+
+This XLSX file comprises 3 sheets which contain the data used to generate Figure 2, Figure 3, and Supplemental Figure 1, respectively. Notice that on Sheet 1, there are separate tables corresponding to each panel of Figure 2. We can use the `read_excel()` function from the readxl package to import the data for each of these tables, since it allows us to specify what cells to import from a given sheet of an XLSX file.
+
+```{r message=FALSE}
+xl_dat_1 <- readxl::read_excel("data/flow_cytometry.xlsx",
+                   sheet = 1,
+                   range = "C5:G15") %>%
+  rename(sample_id = 1)
+xl_dat_1
+```
+
+If we want to import data from Sheet 2, we specify `sheet = 2`, as follows:
+
+```{r message=FALSE}
+xl_dat_2 <- readxl::read_excel("data/flow_cytometry.xlsx",
+                   sheet = 2,
+                   range = "C5:G15") %>%
+  rename(sample_id = 1)
+xl_dat_2
 ```
 
 ## Visualising data
@@ -1161,7 +1258,7 @@ cowplot::plot_grid(plotlist = plots)
 
 ## Heatmaps
 
-![](images/predator.png)
+![](images/predator.png){width=50%}
 
 Everyone who's anyone loves a heatmap.
 
@@ -1412,99 +1509,4 @@ p <- ggplot(eg, aes(x = relab, y = mfi)) +
   geom_point() +
   theme_classic()
 p
-```
-
-## Tidying data
-
-Frequently, the types of data we deal with as biologists aren't formatted in a way that makes them straightforward to handle for downstream analysis. For example, here's a screenshot of a CSV file showing the results of a qPCR assay:
-
-![](images/qpcr_data.png)
-
-Rows 1-27 of this file provide information about the run itself, but the results don't start until row 28. If we want to analyse the results, it'd be useful to exclude rows 1:27. Similarly, we'd only need 3 columns from the results (i.e. `c("Well", "Sample Name", "Ct")`), so it'd be useful to exclude all other columns. The following code can be used to import a tidied version of this table:
-
-```{r message=FALSE}
-cols <- c("Well", "Sample Name", "Ct")
-
-qpcr_data <- read_csv("data/qpcr_data.run_1.csv",
-                      ## exclude the first 27 rows
-                      skip = 27,
-                      ## select the required columns
-                      col_select = all_of(cols))
-qpcr_data
-```
-
-Often, it's useful to remove spaces in column names, which can be achieved as follows:
-
-```{r}
-qpcr_data <- qpcr_data %>%
-  setNames(str_replace(names(.), " ", "_"))
-
-## list the updated column names
-colnames(qpcr_data)
-```
-
-Now the table is in a format that is more interoperable.
-
-### readxl and tidyr
-
-Frequently, we might need to analyse data that we have saved in Excel as XLSX files. Although Excel is excellent for day-to-day work, it can sometimes be tricky to analyse data to work with XLSX files in R, especially if any formatting has been applied to the data in Excel. For example, here's a screenshot of a CSV file recording the expression of TNF-$\alpha$ by monocytes in response to 3 treatments:
-
-![](images/tnf_alpha.png)
-
-As you can see, the first column contains merged cells. When we import this table, these cells will be unmerged as shown below:
-
-```{r message=FALSE}
-tnf <- readxl::read_excel("data/tnf_levels.xlsx")
-tnf
-```
-
-To deal with this, we can use the `fill()` function from tidyr, which will fill empty cells with the preceding value:
-
-```{r}
-tnf <- tnf %>%
-  fill(group)
-tnf
-```
-
-Notice that there are rows with missing values. We can remove these rows using `drop_na()` function from tidyr:
-
-```{r}
-tnf <- tnf %>%
-  drop_na()
-tnf
-```
-
-Now, it's straightforward to work with the table. For example, we can make a box plot with ggplot:
-
-```{r}
-tnf_long <- tnf %>%
-  pivot_longer(cols = !c(group, ct), names_to = "sample_id", values_to = "tnf")
-
-ggplot(tnf_long, aes(x = group, y = tnf, fill = as.factor(ct))) +
-  geom_boxplot() +
-  labs(x = "Treatment", y = "TNF", fill = "Concentration")
-```
-
-Sometimes we might only be interested in a subset of cells from a given sheet of an XLSX file. For example, here's a screenshot of an XLSX file containing the tables used to generate the figures in the Murphy *et al.* study:
-
-![](images/xlsx_data.png)
-
-This XLSX file comprises 3 sheets which contain the data used to generate Figure 2, Figure 3, and Supplemental Figure 1, respectively. Notice that on Sheet 1, there are separate tables corresponding to each panel of Figure 2. We can use the `read_excel()` function from the readxl package to import the data for each of these tables, since it allows us to specify what cells to import from a given sheet of an XLSX file.
-
-```{r message=FALSE}
-xl_dat_1 <- readxl::read_excel("data/flow_cytometry.xlsx",
-                   sheet = 1,
-                   range = "C5:G15") %>%
-  rename(sample_id = 1)
-xl_dat_1
-```
-
-If we want to import data from Sheet 2, we specify `sheet = 2`, as follows:
-
-```{r message=FALSE}
-xl_dat_2 <- readxl::read_excel("data/flow_cytometry.xlsx",
-                   sheet = 2,
-                   range = "C5:G15") %>%
-  rename(sample_id = 1)
-xl_dat_2
 ```
