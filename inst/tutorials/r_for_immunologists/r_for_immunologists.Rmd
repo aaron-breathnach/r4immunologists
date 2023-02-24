@@ -296,7 +296,7 @@ my_df <- data.frame(id = c("a", "b", "c"),
 print(my_df)
 ```
 
-Most of us will be familiar with working with tables, so we it might help to think of data frames as tables.
+Most of us will be familiar with working with tables, so it helps to think of data frames as tables.
 
 ## Functions
 
@@ -459,7 +459,7 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 ```
 
-Note that I won't be discussing Bioconductor packages today. I will run a second workshop on doing bioinformatics in R.
+Note that I won't be discussing Bioconductor packages today. I will run a separate bioinformatics workshop at a later date.
 
 ## Enter the tidyverse
 
@@ -485,9 +485,33 @@ Once installed, the packages are loaded by running the following command:
 library(tidyverse)
 ```
 
+### Tibbles
+
+Within the tidyverse, the tibble package provides us with the ability to use tibbles, which are data frames with ["more user-friendly printing, subsetting, and factor handling"](https://www.oreilly.com/library/view/efficient-data-processing/9781491980736/ch01.html). Tibbles makes it easier to work with large data.
+
+**Exercise**: Run the code below to see the differences between a data frame and a tibble:
+
+```{r tbl_df_eg, exercise=TRUE}
+## load the in-built iris data frame
+data("iris")
+
+## print the data frame
+print(iris)
+
+## convert the data frame to a tibble
+iris_tbl_df <- as_tibble(iris)
+
+## print the tibble
+print(iris_tbl_df)
+```
+
+As you can see, the tibble is easier to read.
+
+Note that I will refer to tibbles as data frames in the remainder of the tutorial.
+
 ### Pipes
 
-When we load the tidyverse packages, we can use the operator `%>%`, which is called the pipe. The pipe is from the magrittr package. It allows us to pass the output from one function as the input to a second function. In [*R for Data Science*](https://r4ds.had.co.nz/pipes.html#pipes), the following children's story is used to illustrate how pipes work:
+After loading the tidyverse using `library(tidyverse)`, we can use the operator `%>%`, which is called the pipe. The pipe is from the magrittr package. It allows us to pass the output from one function as the input to a second function. In [*R for Data Science*](https://r4ds.had.co.nz/pipes.html#pipes), the following children's story is used to illustrate how pipes work:
 
 > Little bunny Foo Foo
 >
@@ -511,30 +535,6 @@ When piping, it helps to think of functions as actions. For example, to represen
       bop(on = head)
 
 I'm not sure what sort of bunny goes around smacking mice, but there you have it.
-
-### Tibbles
-
-The tibble package provides us with the ability to use tibbles, which are data frames with ["more user-friendly printing, subsetting, and factor handling"](https://www.oreilly.com/library/view/efficient-data-processing/9781491980736/ch01.html). Tibbles makes it easier to work with large data.
-
-**Exercise**: Run the code below to see the differences between a data frame and a tibble:
-
-```{r tbl_df_eg, exercise=TRUE}
-## load the in-built iris data frame
-data("iris")
-
-## print the data frame
-print(iris)
-
-## convert the data frame to a tibble
-iris_tbl_df <- as_tibble(iris)
-
-## print the tibble
-print(iris_tbl_df)
-```
-
-As you can see, the tibble is easier to read.
-
-Note that I will refer to tibbles as data frames in the remainder of the tutorial.
 
 ## Transforming data
 
@@ -577,8 +577,12 @@ starwars %>%
 **Exercise**: Order the data frame by increasing mass.
 
 ```{r arrange, exercise=TRUE}
+starwars
+```
+
+```{r arrange-solution}
 starwars %>%
-  arrange(mass)
+  select(mass)
 ```
 
 ### `dplyr::filter()`
