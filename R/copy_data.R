@@ -29,4 +29,6 @@ copy_data <- function() {
   
   system(cmd)
   
+  setwd(wd)
+  
 }

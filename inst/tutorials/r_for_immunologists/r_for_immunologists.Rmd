@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(learnr)
 library(cowplot)
+library(tidyverse)
 
 cube_root <- function(x) {
   x ^ (1/3)
