@@ -40,7 +40,7 @@ learnr::run_tutorial("r_for_immunologists", package = "r4immunologists")
 
 ## Data
 
-We can copy the data for this tutorial to our Desktop by running:
+For convenience, the following code will create a directory on our Desktop called `r_for_immunologists` which contains the data used for this tutorial, and it will set `r_for_immunologists` as our working directory:
 
 ```{r}
 r4immunologists::copy_data()
